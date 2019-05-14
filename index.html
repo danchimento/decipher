@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cracked</title>
+
+        <style>
+            @font-face {
+                font-family: 'retro';
+                src: url('fonts/ponde___.ttf');
+            }
+        </style>
+    </head>
+    <body>
+
+        <script>
+            px = (val) => `${val}px`;
+            rand = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+            hide = (elem) => { if (!elem) return; elem.style.display = 'none'; }
+            show = (elem) => { if (!elem) return; elem.style.display = 'inline-block';}
+
+            var letters = 'abcdefghijklmnopqrstuvwxyz';
+
+            var html = document.getElementsByTagName('html')[0];
+            var body = document.body;
+            var codeElement = document.createElement('div');
+            document.body.appendChild(codeElement);
+            
+            html.style.height = '100%';
+            body.style.height = '100%';
+            body.style.backgroundColor = 'black';
+            body.style.display = 'flex';
+            body.style.flexDirection = 'column';
+            body.style.alignItems = 'center';
+            body.style.justifyContent = 'center';
+            body.style.color = 'white';
+
+            var code = 'crack the code';
+            codeElement.style.textAlign = 'center';
+
+            document.onkeydown = (e) => {
+
+                var key = e.key;
+                var hit = false;
+
+                if (key == ' ') {
+                    return;
+                }
+
+                for (var i = 0; i < code.length; i ++) {
+                    if (code[i] == key) {
+                        var characterElement = codeElement.children[i];
+                        
+                        var textElement = characterElement.children[0];
+                        var glyphElement = characterElement.children[1];
+                        show(textElement);
+                        hide(glyphElement);
+                        
+                        hit = true;
+                    }
+                }
+
+                if (!hit) {
+                    for (var characterElement of codeElement.children) {
+                        hide(characterElement.children[0]);
+                        show(characterElement.children[1]);
+                    }
+                }
+            }
+
+            for (var character of code) {
+                var characterElement = document.createElement('span')
+                characterElement.style.position = 'relative';
+                characterElement.style.margin = px(5);
+                characterElement.style.textTransform = 'uppercase';
+
+                var textElement = document.createElement('span');
+                textElement.innerHTML = character;
+                textElement.style.fontSize = px(32);
+                textElement.style.display = 'none';
+                textElement.style.width = px(32);
+                textElement.style.fontFamily = 'retro';
+                characterElement.appendChild(textElement);
+
+                
+                if (character != ' ') {
+                    var glyphElement = document.createElement('span');
+                    glyphElement.style.fontSize = px(32);
+                    glyphElement.style.width = px(32);
+                    glyphElement.style.display = 'inline-block';
+                    glyphElement.className = 'glyph';
+                    glyphElement.style.fontFamily = 'retro';
+                    characterElement.appendChild(glyphElement);
+                }
+
+                codeElement.appendChild(characterElement);
+            }
+
+            var glyphInterval = setInterval(() => {
+
+                var glyphElements = document.getElementsByClassName('glyph');
+
+                for (glyphElement of glyphElements) {
+                    var characaterNumber = rand(0, letters.length-1);
+                    glyphElement.innerHTML = letters[characaterNumber];
+                }
+
+            }, 64);
+            
+
+        </script>
+    </body>
+</html>
